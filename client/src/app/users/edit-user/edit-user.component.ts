@@ -42,6 +42,7 @@ export class EditUserComponent implements OnInit {
       lastname: [this.userData.lastname, [Validators.required]],
       age: [this.userData.age, [Validators.required]],
       email: [this.userData.email, [Validators.required]],
+      role: [this.userData.role, [Validators.required]],
       password: [this.userData.password, [Validators.required]],
       profile_pic: [this.userData.profile_pic, [Validators.required]],
     });
@@ -54,6 +55,7 @@ export class EditUserComponent implements OnInit {
         lastname: this.editUserForm.get('lastname').value,
         age: this.editUserForm.get('age').value,
         email: this.editUserForm.get('email').value,
+        role: this.editUserForm.get('role').value,
         password: this.editUserForm.get('password').value,
         profile_pic: this.editUserForm.get('profile_pic').value,
       },

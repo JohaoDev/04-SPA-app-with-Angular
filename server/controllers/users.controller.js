@@ -22,7 +22,7 @@ let getUsers = (req, res) => {
 };
 
 let getUserByID = (req, res) => {
-  let _id = req.params.id;
+  let { _id } = req.params;
 
   User.find({ _id })
     .then((data) => {
@@ -106,8 +106,8 @@ let postUsers = (req, res) => {
 };
 
 let patchUser = (req, res) => {
-  let _id = req.params.id,
-    data = req.body.data;
+  let { _id } = req.params,
+    { data } = req.body;
 
   User.updateOne({ _id }, { $set: data })
     .then((data) => {

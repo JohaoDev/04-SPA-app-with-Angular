@@ -13,6 +13,7 @@ export interface UserData {
     lastname: string;
     age: number;
     email: string;
+    role: String;
     password: string;
     profile_pic: string;
   };
@@ -46,6 +47,7 @@ export class NewUserComponent implements OnInit {
       lastname: ['', [Validators.required]],
       age: ['', [Validators.required]],
       email: ['', [Validators.required]],
+      role: ['', [Validators.required]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
       profile_pic: ['', [Validators.required]],
@@ -59,6 +61,7 @@ export class NewUserComponent implements OnInit {
         lastname: this.createUserForm.get('lastname').value,
         age: this.createUserForm.get('age').value,
         email: this.createUserForm.get('email').value,
+        role: this.createUserForm.get('role').value,
         password: this.createUserForm.get('password').value,
         profile_pic: this.createUserForm.get('profile_pic').value,
       },

@@ -68,7 +68,7 @@ export class EditUserComponent implements OnInit {
     );
 
     if (updatedUser !== []) {
-      this.router.navigate(['/users']);
+      this.router.navigate(['users']);
       localStorage.clear();
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -21,7 +21,7 @@ export interface DataLogin {
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  dataLogin: DataLogin;
+  dataLogin;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,30 +49,55 @@ export class LoginComponent implements OnInit {
       },
     };
 
-    this.loginService.logIn(this.dataLogin).subscribe(
-      (res: DataRx) => {
-        if (res.ok) {
-          if (this.permissions.decodeToken(res.token)) {
-            this.router.navigate(['/users']);
-            // console.log(this.permissions.getUserLogin());
+    if (this.dataLogin.data.email == '' || this.dataLogin.data.password == '') {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Fill all the gaps to continue, pls',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      this.loginService.logIn(this.dataLogin).subscribe(
+        (res: DataRx) => {
+          if (res.ok) {
+            if (this.permissions.decodeToken(res.token)) {
+              this.router.navigate(['users']);
+              // console.log(this.permissions.getUserLogin());
+            }
+          } else {
+            this.dataLogin.data.email = '';
+            this.dataLogin.data.password = '';
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: res.msg,
+              showConfirmButton: false,
+              timer: 1500,
+            });
           }
-        } else {
+        },
+        (error) => {
           this.dataLogin.data.email = '';
           this.dataLogin.data.password = '';
           Swal.fire({
             position: 'center',
             icon: 'error',
-            title: res.msg,
+            title: 'Data not found, try again',
             showConfirmButton: false,
             timer: 1500,
           });
+          console.log(error);
         }
-      },
-      (error) => {
-        this.dataLogin.data.email = '';
-        this.dataLogin.data.password = '';
-        console.log(error);
-      }
-    );
+      );
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.code === 'Enter') {
+      event.preventDefault();
+      this.login();
+    }
   }
 }

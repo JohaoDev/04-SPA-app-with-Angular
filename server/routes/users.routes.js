@@ -21,8 +21,8 @@ api.post("/user", passwordController.encodePassword, userController.postUser);
 // api.post("/users", userController.postUsers);
 api.post("/login", userController.loginUsers);
 
-api.patch("/user/:id", authController.auth, userController.patchUser);
+api.patch("/user/:_id", authController.auth, userController.patchUser);
 
-api.delete("/user/:id", authController.auth, userController.deleteUser);
+api.delete("/user/:_id", authController.auth, userController.deleteUser);
 
 module.exports = api;

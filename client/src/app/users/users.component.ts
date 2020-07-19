@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 import { CrudService } from '../services/crud.service';
 import { WebServiceService } from '../services/web-service.service';
@@ -51,5 +52,36 @@ export class UsersComponent implements OnInit {
 
   goCreateUser() {
     this.router.navigate(['/users/create']);
+  }
+
+  logout = () => {
+    Swal.fire({
+      title: 'Are you sure to leave this session?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Back',
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Session closed!',
+          showConfirmButton: false,
+          timer: 1000,
+        }).then(() => {
+          localStorage.clear();
+          this.router.navigate(['/']);
+        });
+      }
+    });
+  };
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'F5' || event.code === 'F5') {
+      event.preventDefault();
+      this.logout();
+    }
   }
 }

@@ -128,7 +128,7 @@ let patchUser = (req, res) => {
 };
 
 let deleteUser = (req, res) => {
-  let _id = req.params.id;
+  let { _id } = req.params;
 
   User.deleteOne({ _id })
     .then((data) => {

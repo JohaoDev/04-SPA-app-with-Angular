@@ -4,10 +4,10 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PermissionsService } from '../services/permissions.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +15,7 @@ import { PermissionsService } from '../services/permissions.service';
 export class RoleGuard implements CanActivate {
   userLogin: any;
 
-  constructor(
-    private permissionsService: PermissionsService,
-    private router: Router
-  ) {
+  constructor(private permissionsService: PermissionsService) {
     this.userLogin = this.permissionsService.getUserLogin();
   }
 
@@ -30,26 +27,19 @@ export class RoleGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log(this.userLogin);
     switch (this.userLogin.role) {
-      case '5f0dba3ac6133d66aaee6e2c':
-        // this.router.navigate(['/users']);
+      case '5f136f1b5e21105a19dfc224':
         return true;
         break;
-      // case "":
-      //   this.router.navigate(["/users"])
-      //   return true
-      //   break;
       default:
-        // window.location.reload();
-        alert("you don't have permissions");
-      // window.location.href("http://localhost:4200")
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: `You don't hava permissions to enter`,
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => window.location.reload());
+        return false;
     }
   }
-
-  // if (this.userLogin) {
-  // return true;
-  // } else {
-  // this.router.navigate(['/login']);
-  // }
 }
